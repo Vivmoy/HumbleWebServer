@@ -1,9 +1,9 @@
 #include "threadpool.h"
 
-template<class T>
-threadpool<T>::threadpool(int thread_number,int max_requests) : 
-        thread_number(thread_number),max_requests(max_requests),stop(false),threads(NULL)
+template<typename T>
+threadpool<T>::threadpool(int thread_number,int max_requests) : thread_number(thread_number),max_requests(max_requests)
 {
+    stop = false;
     if((thread_number <= 0) || (max_requests <= 0))
         throw std::exception();
 
@@ -29,14 +29,14 @@ threadpool<T>::threadpool(int thread_number,int max_requests) :
     }
 }
 
-template<class T>
+template<typename T>
 threadpool<T>::~threadpool()
 {
     delete[] threads;
     stop = true;
 }
 
-template<class T>
+template<typename T>
 bool threadpool<T>::append(T* request)
 {
     queuelock.lock();
@@ -51,7 +51,7 @@ bool threadpool<T>::append(T* request)
     return true;
 }
 
-template<class T>
+template<typename T>
 void threadpool<T>::run()
 {
     while(!stop)

@@ -7,7 +7,7 @@
 #include <pthread.h>
 #include "lock.h"
 
-template<class T>
+template<typename T>
 class threadpool
 {
 public:
@@ -28,7 +28,7 @@ private:
 };
 
 // 工作线程运行的函数，不断从工作队列中取出任务并执行
-template<class T>
+template<typename T>
 void* threadpool<T>::worker(void* arg)
 {
     threadpool* pool = (threadpool*) arg;
