@@ -10,7 +10,6 @@
 #include <fcntl.h>
 #include <string.h>
 #include <iostream>
-#include "lock.h"
 
 class http_conn
 {

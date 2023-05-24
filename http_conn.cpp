@@ -140,6 +140,7 @@ void http_conn::send_file(int client_sock,FILE* resource)
     fgets(buf,sizeof(buf),resource);
     while(!feof(resource))
     {
+        //std::cout << "3" << std::endl;
         send(client_sock,buf,strlen(buf),0);
         fgets(buf,sizeof(buf),resource);
     }
@@ -159,6 +160,7 @@ void http_conn::serve_file(int client_sock,const char* filename)
         not_found(client_sock);
     else
     {
+        //std::cout << "2" << std::endl;
         headers(client_sock);
         send_file(client_sock,resource);
     }
@@ -200,7 +202,7 @@ void http_conn::execute_cgi(int client_sock,const char* path,const char* method,
     int cgi_input[2];
 
     pid_t pid;
-    int status;
+    //int status;
     int i = 0;
     int numchars = 1;
     int content_length = -1;
@@ -362,11 +364,14 @@ void* http_conn::process()
            (st.st_mode & S_IXOTH))
             cgi = true;
         if(!cgi)
+        {
+            //std::cout << "1" << std::endl;
             serve_file(client_sock,path);
+        }
         else
             execute_cgi(client_sock,path,method,query_string);
     }
-    close(client_sock);
+    close_conn();
     std::cout << "client " << client_sock << "'s connection closed" << std::endl;
     return nullptr;
 }

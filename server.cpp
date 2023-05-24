@@ -7,7 +7,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <netinet/in.h>
-#include <pthread.h>
+//#include <pthread.h>
 #include <string>
 #include <string.h>
 #include "threadpool.h"
@@ -393,10 +393,10 @@ void show_error(int client_sock,const char* msg)
 
 int main()
 {
-    threadpool<http_conn>* pool;
+    threadpool<http_conn>* pool = nullptr;
     try
     {
-        pool = new threadpool<http_conn>;
+        pool = new threadpool<http_conn>();
     }
     catch(...)
     {
@@ -407,12 +407,12 @@ int main()
     {
         error_die("create user's http_conn failed");
     }
-    int user_count = 0;
+    //int user_count = 0;
 
     int server_sock = -1;
-    __u_short server_port = 9190;
+    __u_short server_port = 6789;
 
-    pthread_t main_thread;
+    //pthread_t main_thread;
     server_sock = start_server(&server_port);
 
     std::cout << "my server socket is " << server_sock << std::endl;
@@ -450,18 +450,18 @@ int main()
                 std::cout << "              -----port:" << ntohs(client_addr.sin_port) << std::endl;
                 users[client_sock].init(client_sock,client_addr);
             }
-            else if(events[i].events & (EPOLLRDHUP | EPOLLHUP | EPOLLERR))
-            {
-                users[sockfd].close_conn();
-            }
+            // else if(events[i].events & (EPOLLRDHUP | EPOLLHUP | EPOLLERR))
+            // {
+            //     users[sockfd].close_conn();
+            // }
             else if(events[i].events & EPOLLIN)
             {
                 pool->append((users + sockfd));
             }
-            else if(events[i].events & EPOLLOUT)
-            {
-                users[sockfd].close_conn();
-            }
+            // else if(events[i].events & EPOLLOUT)
+            // {
+            //     users[sockfd].close_conn();
+            // }
             else
             {}
         }

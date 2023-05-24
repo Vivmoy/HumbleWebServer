@@ -1,4 +1,4 @@
 server:
-	g++ server.cpp lock.cpp threadpool.cpp http_conn.cpp -o server -lpthread
+	g++ -W -Wall -o server server.cpp lock.cpp threadpool.h http_conn.cpp -lpthread
 clean:
 	rm server
